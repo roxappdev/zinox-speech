@@ -39,7 +39,7 @@ No servers, no API keys, no uploads — the neural engine (~90 MB) is downloaded
 
 ## 🚀 Quick start
 
-Requirements: **Node.js 20+** (or [Bun](https://bun.sh) 1.1+). No database, no backend services, no environment variables — the project is fully self-contained.
+Requirements: **Node.js 20+** (or Bun 1.1+). No database, no backend services, no environment variables — the project is fully self-contained.
 
 ```bash
 # 1. Install dependencies
