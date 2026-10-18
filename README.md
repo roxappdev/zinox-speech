@@ -39,18 +39,18 @@ No servers, no API keys, no uploads — the neural engine (~90 MB) is downloaded
 
 ## 🚀 Quick start
 
-Requirements: **Node.js 20+** (or Bun 1.1+). No database, no backend services, no environment variables — the project is fully self-contained.
+Requirements: **Node.js 20+**. No database, no backend services, no environment variables — the project is fully self-contained.
 
 ```bash
 # 1. Install dependencies
-npm install        # or: bun install
+npm install
 
 # 2. Development server
 npm run dev        # → http://localhost:3000
 
-# Production
+# 3. Static production build (outputs to ./out)
 npm run build
-npm run start      # serves the standalone build
+npm run preview    # serves ./out locally on http://localhost:3000
 ```
 
 > ⚠️ **Serve over HTTP(S), never open via `file://`** — the AI runtime and model downloads require a normal HTTP origin. First generation downloads ~90 MB of weights; afterwards they are cached by the browser and work offline.
@@ -83,9 +83,36 @@ npm run start      # serves the standalone build
 - **Sections** → `src/components/landing/*.tsx`
 - **Voices** → add/remove entries in `VOICES`
 
+## 🌍 Deploying to GitHub Pages
+
+The project builds to a fully static site (`output: "export"`), so it can be hosted on
+GitHub Pages for free.
+
+1. Push the repository to GitHub.
+2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
+3. The included workflow `.github/workflows/deploy.yml` builds and publishes `out/` on
+   every push to `main`.
+
+The workflow passes `NEXT_PUBLIC_BASE_PATH=/<repo>` and
+`NEXT_PUBLIC_SITE_URL=https://<user>.github.io/<repo>` automatically, so all assets and
+metadata resolve under the project sub-path.
+
+For a custom domain or a user/organization page (`https://<user>.github.io/`), set
+`NEXT_PUBLIC_BASE_PATH` to an empty string before building.
+
+Local production build that mirrors GitHub Pages:
+
+```bash
+NEXT_PUBLIC_BASE_PATH=/zinox-speech \
+NEXT_PUBLIC_SITE_URL=https://roxappdev.github.io/zinox-speech \
+npm run build
+```
+
 ## 🌐 Browser support
 
-Chrome/Edge 113+ (WebGPU acceleration), Firefox and Safari via WASM fallback. Mobile browsers supported; the first engine download is Wi-Fi-friendly (~90 MB).
+Chrome, Edge, Firefox and Safari. The engine runs on the CPU through WebAssembly, so no
+special hardware or browser flags are required. Mobile browsers are supported; the first
+engine download is Wi-Fi-friendly (~90 MB).
 
 ## 📸 QA
 

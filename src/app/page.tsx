@@ -27,7 +27,7 @@ function StructuredData() {
       "Free AI text to speech with no sign-up",
       "Runs 100% in the browser",
       "16 natural English voices",
-      "WebGPU acceleration with WASM fallback",
+      "Runs on any modern browser without setup",
       "Lossless WAV download",
       "Adjustable speaking speed from 0.5x to 1.5x",
       "Offline synthesis after the first run is cached",

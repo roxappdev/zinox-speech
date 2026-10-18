@@ -1,5 +1,6 @@
 export const SITE_NAME = "Zinox Speech";
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://zinoxspeech.com";
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://roxappdev.github.io/zinox-speech";
 export const SITE_TAGLINE = "Free AI Text to Speech — 100% in Your Browser";
 export const SITE_DESCRIPTION =
   "Convert text to natural, studio-quality speech for free. Zinox Speech runs AI text-to-speech entirely in your browser — no sign-up, no uploads, no API keys. Your text never leaves your device.";
@@ -11,7 +12,6 @@ export const SITE_KEYWORDS = [
   "ai voice generator",
   "text to speech online free",
   "browser text to speech",
-  "webgpu tts",
   "offline text to speech",
   "natural ai voices",
   "speech synthesis",
@@ -82,7 +82,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Does my text get uploaded to a server?",
     answer:
-      "No. All speech synthesis happens locally in your browser via WebAssembly or WebGPU. Your text and the generated audio never leave your device, which makes Zinox Speech suitable for private notes, confidential documents and compliance-sensitive workflows.",
+      "No. All speech synthesis happens locally in your browser. Your text and the generated audio never leave your device, which makes Zinox Speech suitable for private notes, confidential documents and compliance-sensitive workflows.",
   },
   {
     question: "How large is the download?",
@@ -92,7 +92,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Which browsers are supported?",
     answer:
-      "Any modern browser with WebAssembly support works: Chrome, Edge, Firefox and Safari. If your browser supports WebGPU (Chrome and Edge on desktop), Zinox Speech can use it for an additional 2–4x speed-up. Otherwise it falls back to WASM automatically.",
+      "Any modern browser works: Chrome, Edge, Firefox and Safari. The engine runs on the CPU through WebAssembly, so no special hardware or browser flags are required.",
   },
   {
     question: "Can I use the generated audio commercially?",

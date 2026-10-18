@@ -165,8 +165,6 @@ export function TtsDemo() {
   const [text, setText] = useState(SAMPLE_TEXTS[0].text);
   const [voiceId, setVoiceId] = useState("af_heart");
   const [speed, setSpeed] = useState(1);
-  const [device, setDevice] = useState<"wasm" | "webgpu">("wasm");
-  const [hasWebGpu, setHasWebGpu] = useState(false);
 
   const [status, setStatus] = useState<Status>("idle");
   const [statusText, setStatusText] = useState("");
@@ -185,11 +183,6 @@ export function TtsDemo() {
   const rafRef = useRef<number>(0);
   const peaksRef = useRef<number[] | null>(null);
   const playedRef = useRef(0);
-
-  useEffect(() => {
-    const gpuAvailable = typeof navigator !== "undefined" && "gpu" in navigator;
-    setHasWebGpu(Boolean(gpuAvailable));
-  }, []);
 
   useEffect(() => {
     return () => {
@@ -266,11 +259,9 @@ export function TtsDemo() {
   }, [peaks, drawWaveform]);
 
   const getSynthesizer = useCallback(
-    async (targetDevice: "wasm" | "webgpu") => {
-      const cacheKey = targetDevice;
-
-      if (synthCache.current.has(cacheKey)) {
-        return synthCache.current.get(cacheKey);
+    async () => {
+      if (synthCache.current.has("cpu")) {
+        return synthCache.current.get("cpu");
       }
 
       setStatus("loading");
@@ -300,19 +291,19 @@ export function TtsDemo() {
           setLoadProgress(pct);
           setStatusText(
             pct < 100
-              ? `Downloading the neural engine — ${pct}% (${targetDevice === "webgpu" ? "~330 MB" : "~90 MB"})`
+              ? `Downloading the neural engine — ${pct}% (~90 MB)`
               : "Loading the engine into memory…"
           );
         }
       };
 
       const synthesizer = await KokoroTTS.from_pretrained(MODEL_ID, {
-        device: targetDevice,
-        dtype: targetDevice === "webgpu" ? "fp32" : "q8",
+        device: "wasm",
+        dtype: "q8",
         progress_callback: onProgress,
       });
 
-      synthCache.current.set(cacheKey, synthesizer);
+      synthCache.current.set("cpu", synthesizer);
       return synthesizer;
     },
     []
@@ -338,7 +329,7 @@ export function TtsDemo() {
     const startedAt = performance.now();
 
     try {
-      const synthesizer = await getSynthesizer(device);
+      const synthesizer = await getSynthesizer();
 
       const chunks = splitIntoChunks(trimmed);
       const parts: Float32Array[] = [];
@@ -395,7 +386,7 @@ export function TtsDemo() {
         `Speech generation failed: ${message}. Check your internet connection (the engine is downloaded on first run) and try again.`
       );
     }
-  }, [text, device, voiceId, speed, audioUrl, getSynthesizer, startProgressLoop]);
+  }, [text, voiceId, speed, audioUrl, getSynthesizer, startProgressLoop]);
 
   const handleDownload = useCallback(() => {
     if (!audioUrl) return;
@@ -439,8 +430,8 @@ export function TtsDemo() {
           </h2>
           <p className="mt-4 text-base leading-relaxed text-zinc-400">
             This demo loads a real neural network into this page and synthesizes speech
-            on your CPU or GPU. No recordings, no server round-trips — just inference,
-            live in your browser.
+            directly on your device. No recordings, no server round-trips — just
+            inference, live in your browser.
           </p>
         </div>
 
@@ -497,7 +488,7 @@ export function TtsDemo() {
             </div>
 
             {/* Controls */}
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="tts-voice" className="text-sm text-zinc-300">
                   Voice
@@ -559,40 +550,6 @@ export function TtsDemo() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="tts-device" className="text-sm text-zinc-300">
-                  Compute device
-                </Label>
-                <Select
-                  value={device}
-                  onValueChange={(value) => setDevice(value as "wasm" | "webgpu")}
-                  disabled={busy}
-                >
-                  <SelectTrigger
-                    id="tts-device"
-                    className="w-full border-white/10 bg-zinc-950/60 text-zinc-100"
-                    aria-label="Select compute device"
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="border-white/10 bg-zinc-900 text-zinc-100">
-                    <SelectItem value="wasm" className="focus:bg-violet-500/20">
-                      CPU (WASM, INT8) — most compatible
-                    </SelectItem>
-                    <SelectItem
-                      value="webgpu"
-                      disabled={!hasWebGpu}
-                      className="focus:bg-violet-500/20"
-                    >
-                      {hasWebGpu
-                        ? "WebGPU — fastest (FP32, ~330 MB)"
-                        : hasWebGpu === false
-                          ? "WebGPU — not available in this browser"
-                          : "WebGPU"}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
 
             {/* Action row */}

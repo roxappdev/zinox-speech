@@ -23,9 +23,9 @@ const FEATURES = [
   },
   {
     icon: Gauge,
-    title: "Faster Than Real Time",
+    title: "Fast Enough to Feel Instant",
     description:
-      "WebGPU acceleration pushes synthesis to several times faster than playback on modern GPUs, while the WASM fallback keeps older machines comfortably in real time.",
+      "The optimized engine synthesizes speech faster than real time on a modern laptop CPU — no dedicated graphics hardware required.",
   },
   {
     icon: Mic2,

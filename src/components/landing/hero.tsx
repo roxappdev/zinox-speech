@@ -75,8 +75,7 @@ export function Hero() {
           <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-zinc-400 sm:text-xl">
             Turn any text into studio-quality speech with a{" "}
             <strong className="font-semibold text-zinc-200">neural voice engine</strong>{" "}
-            that runs right inside this page and is accelerated by WebGPU. No API keys, no
-            uploads, no sign-up.
+            that runs right inside this page. No API keys, no uploads, no sign-up.
           </p>
 
           <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
