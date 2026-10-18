@@ -1,6 +1,5 @@
 export const SITE_NAME = "Zinox Speech";
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://roxappdev.github.io/zinox-speech";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://zinox.org";
 export const SITE_TAGLINE = "Free AI Text to Speech — 100% in Your Browser";
 export const SITE_DESCRIPTION =
   "Convert text to natural, studio-quality speech for free. Zinox Speech runs AI text-to-speech entirely in your browser — no sign-up, no uploads, no API keys. Your text never leaves your device.";

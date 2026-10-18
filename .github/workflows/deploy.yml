@@ -19,9 +19,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # Project pages are served from https://<user>.github.io/<repo>/
-      NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
-      NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+      # Custom domain is served from the site root, so no base path is needed.
+      NEXT_PUBLIC_BASE_PATH: ""
+      NEXT_PUBLIC_SITE_URL: https://zinox.org
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,8 +41,10 @@ jobs:
       - name: Build static site
         run: npm run build
 
-      - name: Disable Jekyll
-        run: touch out/.nojekyll
+      - name: Configure Pages output
+        run: |
+          touch out/.nojekyll
+          echo "zinox.org" > out/CNAME
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

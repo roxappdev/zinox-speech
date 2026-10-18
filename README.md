@@ -85,26 +85,25 @@ npm run preview    # serves ./out locally on http://localhost:3000
 
 ## 🌍 Deploying to GitHub Pages
 
-The project builds to a fully static site (`output: "export"`), so it can be hosted on
-GitHub Pages for free.
+The project builds to a fully static site (`output: "export"`), so it is hosted on
+GitHub Pages at **https://zinox.org/**.
 
 1. Push the repository to GitHub.
 2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
 3. The included workflow `.github/workflows/deploy.yml` builds and publishes `out/` on
    every push to `main`.
 
-The workflow passes `NEXT_PUBLIC_BASE_PATH=/<repo>` and
-`NEXT_PUBLIC_SITE_URL=https://<user>.github.io/<repo>` automatically, so all assets and
-metadata resolve under the project sub-path.
+Because the site uses a **custom root domain**, the build runs with an empty base path,
+and the workflow writes `CNAME` (zinox.org) plus `.nojekyll` into the artifact.
 
-For a custom domain or a user/organization page (`https://<user>.github.io/`), set
-`NEXT_PUBLIC_BASE_PATH` to an empty string before building.
+If you ever host it under a project sub-path (`https://<user>.github.io/<repo>/`) instead,
+set `NEXT_PUBLIC_BASE_PATH=/<repo>` before building.
 
-Local production build that mirrors GitHub Pages:
+Local production build that mirrors the deployment:
 
 ```bash
-NEXT_PUBLIC_BASE_PATH=/zinox-speech \
-NEXT_PUBLIC_SITE_URL=https://roxappdev.github.io/zinox-speech \
+NEXT_PUBLIC_BASE_PATH="" \
+NEXT_PUBLIC_SITE_URL=https://zinox.org \
 npm run build
 ```
 
